@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 import uvicorn
 
 from datetime import datetime
@@ -14,6 +14,7 @@ def root():
     """Root endpoint to verify that the API is working."""
     return {"message": "Hello, World!", "timestamp": datetime.now().isoformat()}
 
-if __name__ == "__main__":
-    # Use reload=True only in development for auto-reload on code changes
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True) 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204) # 204 means "No Content"
+

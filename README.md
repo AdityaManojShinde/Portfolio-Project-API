@@ -14,5 +14,5 @@ To run the api use following command.
 
 ```python
 
-uuvicorn app.main:app  --reload
+uvicorn app.main:app  --reload
 ```

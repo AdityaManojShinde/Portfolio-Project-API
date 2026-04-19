@@ -2,8 +2,12 @@ from fastapi import FastAPI
 import uvicorn
 
 from datetime import datetime
+from app.routes import projects
 
 app = FastAPI()
+
+# Add Routes
+app.include_router(projects.router)
 
 @app.get("/")
 def root():

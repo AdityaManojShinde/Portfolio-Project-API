@@ -7,9 +7,9 @@ class ProjectBase(BaseModel):
     title: str = Field(..., example="Deepfake Detection System")
     description: str = Field(..., example="A dual-stream CNN model using Vision Transformers.")
     tech_stack: List[str] = Field(..., example=["Python", "PyTorch", "FastAPI"])
-    img_url: Optional[HttpUrl] = Field(None, example="https://example.com/project-image.png")
-    github_url: Optional[HttpUrl] = Field(None, example="https://github.com/user/project")
-    live_demo_url: Optional[HttpUrl] = Field(None, example="https://demo.com/project")
+    image_url: Optional[HttpUrl] = Field(None, example="https://example.com/project-image.png")
+    github_link: Optional[HttpUrl] = Field(None, example="https://github.com/user/project")
+    live_demo_link: Optional[HttpUrl] = Field(None, example="https://demo.com/project")
 
 class ProjectCreate(ProjectBase):
     """Used for POST requests: All base fields are required."""
@@ -26,5 +26,5 @@ class ProjectUpdate(BaseModel):
 
 class Project(ProjectBase):
     """Used for GET responses: Includes the database ID."""
-    id: int
+    id: str = Field(..., example="123e4567-e89b-12d3-a456-426614174000")
     model_config = ConfigDict(from_attributes=True)

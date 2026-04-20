@@ -26,5 +26,5 @@ class ProjectUpdate(BaseModel):
 
 class Project(ProjectBase):
     """Used for GET responses: Includes the database ID."""
-    id: int
+    id: str = Field(..., example="123e4567-e89b-12d3-a456-426614174000")
     model_config = ConfigDict(from_attributes=True)

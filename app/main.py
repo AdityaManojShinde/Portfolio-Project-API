@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Response
-import uvicorn
-
 from datetime import datetime
 from app.routes import projects
+from app.services.db import Base, engine
+
 
 app = FastAPI()
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
 
 # Add Routes
 app.include_router(projects.router)

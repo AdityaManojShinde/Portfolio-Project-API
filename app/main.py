@@ -6,7 +6,7 @@ from app.services.db import Base, engine
 
 app = FastAPI()
 
-# Create database tables
+# Initialize database tables
 Base.metadata.create_all(bind=engine)
 
 # Add Routes

@@ -1,4 +1,4 @@
-from db import Base
+from app.services.db import Base
 from sqlalchemy import Column, String, Text, DateTime, JSON
 from datetime import datetime
 from uuid import uuid4

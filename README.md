@@ -21,12 +21,14 @@ uvicorn app.main:app  --reload
 The API exposes project CRUD operations at the `/project` path.
 
 ### Endpoints
+### Project
 - `GET /project/` - List all projects
 - `GET /project/{project_id}` - Get a project by ID
 - `POST /project/` - Create a new project
 - `PATCH /project/{project_id}` - Update an existing project
 - `DELETE /project/{project_id}` - Delete a project
-
+### Authentication
+- `POST /auth/login` - Login User And Give Auth Token
 ### Example Create Request
 Send a JSON body with the required fields:
 

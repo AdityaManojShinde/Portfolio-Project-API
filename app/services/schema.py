@@ -15,3 +15,10 @@ class Project(Base):
     live_demo_link = Column(String, nullable=True)
     created_at = Column(DateTime)
     updated_at = Column(DateTime, default=datetime.now())
+
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(String, primary_key=True, index=True, default=lambda: str(uuid4()))
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)

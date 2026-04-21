@@ -28,3 +28,14 @@ class Project(ProjectBase):
     """Used for GET responses: Includes the database ID."""
     id: str = Field(..., example="123e4567-e89b-12d3-a456-426614174000")
     model_config = ConfigDict(from_attributes=True)
+
+
+# /auth route data models
+
+class LoginRequest(BaseModel):
+    username: str = Field(..., example="user123")
+    password: str = Field(..., example="strongpassword")
+
+class TokenResponse(BaseModel):
+    access_token: str = Field(..., example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+    token_type: str = Field(..., example="bearer")

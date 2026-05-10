@@ -13,7 +13,7 @@ class AuthService:
     def __init__(self, db: Session):
         self.db = db
         self.SECRET_KEY = os.getenv("SECRET_KEY")
-        self.ALGORITHM = os.getenv("ALGORITHM")
+        self.ALGORITHM = "HS256"
         self.ACCESS_TOKEN_EXPIRE_MINUTES = 60
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

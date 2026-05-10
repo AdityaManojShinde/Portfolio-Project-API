@@ -14,7 +14,7 @@ load_dotenv()
 # Validate required environment variables at startup
 def _validate_environment():
     """Validate that all required environment variables are set."""
-    required_vars = ["SECRET_KEY", "ALGORITHM", "USERNAME", "PASSWORD"]
+    required_vars = ["SECRET_KEY","USERNAME", "PASSWORD"]
     missing_vars = [var for var in required_vars if not os.getenv(var)]
     
     if missing_vars:
@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI):
     db = DBSession()
     try:
         auth_service = AuthService(db)
-        auth_service.register_user(os.getenv("ADMIN_NAME"), os.getenv("PASSWORD"))
+        auth_service.register_user(os.getenv("USERNAME"), os.getenv("PASSWORD"))
         print("✅ Default user created")
     except ValueError as e:
         if "already exists" in str(e):

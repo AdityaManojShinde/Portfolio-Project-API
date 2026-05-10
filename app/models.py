@@ -1,6 +1,18 @@
 from pydantic import BaseModel, HttpUrl, Field, ConfigDict
 from typing import List, Optional
 
+
+# User
+class User(BaseModel):
+    email: str = Field(..., example="user123@example.com")
+    hashed_password: str = Field(..., example="$2b$12$KIXQu1e5s8v1Z6a9b8uOeG5j")
+
+class UserInfo(BaseModel):
+    name: Optional[str] = Field(None, example="user123")
+    profile_img_url: Optional[HttpUrl] = Field(None, example="https://example.com/profile-image.png")
+    bio: Optional[str] = Field(None, example="Software developer with a passion for AI and open-source projects.")
+
+
 # /project route data models
 
 class ProjectBase(BaseModel):

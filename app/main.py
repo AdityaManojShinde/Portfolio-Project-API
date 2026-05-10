@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Depends
+from typing import Annotated
 from contextlib import asynccontextmanager
 from datetime import datetime
 import os
@@ -7,6 +8,7 @@ from app.routes import projects
 from app.services.auth_service import AuthService
 from app.services.db import Base, engine, DBSession
 from app.routes import auth
+from fastapi.security import OAuth2PasswordBearer
 
 # Load environment variables
 load_dotenv()
@@ -52,6 +54,8 @@ async def lifespan(app: FastAPI):
     print("Shutting down application...")
 
 app = FastAPI(lifespan=lifespan)
+oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
+AuthDep = Annotated[str, Depends(oauth2)]
 
 # Add Routes
 app.include_router(projects.router)

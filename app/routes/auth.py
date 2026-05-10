@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from app.services.auth_service import AuthService, get_current_user, oauth2_scheme
 from app.services.db import DatabaseSession
-from app.models import User
+from app.services.schema import User
 
 
 class Token(BaseModel):

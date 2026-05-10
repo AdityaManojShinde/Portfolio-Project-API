@@ -1,14 +1,12 @@
-from fastapi import FastAPI, Response, Depends
-from typing import Annotated
+from fastapi import FastAPI, Response
 from contextlib import asynccontextmanager
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-from app.routes import projects
+from app.routes import projects, auth, user_info, contact, education, certification
 from app.services.auth_service import AuthService
 from app.services.db import Base, engine, DBSession
-from app.routes import auth
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables
 load_dotenv()
@@ -54,12 +52,23 @@ async def lifespan(app: FastAPI):
     print("Shutting down application...")
 
 app = FastAPI(lifespan=lifespan)
-oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
-AuthDep = Annotated[str, Depends(oauth2)]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Add Routes
-app.include_router(projects.router)
 app.include_router(auth.router)
+app.include_router(projects.router)
+app.include_router(user_info.router)
+app.include_router(contact.router)
+app.include_router(education.router)
+app.include_router(certification.router)
 
 @app.get("/")
 def root():

@@ -10,12 +10,14 @@ class EducationService:
     """Service layer for Education database operations."""
 
     @staticmethod
-    def create_education(db: Session, user_id: str, education_data: EducationCreate) -> EducationDB:
+    def create_education(
+        db: Session, user_id: str, education_data: EducationCreate
+    ) -> EducationDB:
         """Create a new education entry."""
         try:
             education_dict = education_data.model_dump(exclude_unset=True)
-            education_dict['user_id'] = user_id
-            
+            education_dict["user_id"] = user_id
+
             education = EducationDB(**education_dict)
             db.add(education)
             db.commit()
@@ -39,19 +41,28 @@ class EducationService:
         return db.query(EducationDB).filter(EducationDB.user_id == user_id).all()
 
     @staticmethod
-    def update_education(db: Session, education_id: str, update_data: EducationUpdate) -> EducationDB:
+    def get_all_education(db: Session) -> list[EducationDB]:
+        """Get all education entries."""
+        return db.query(EducationDB).all()
+
+    @staticmethod
+    def update_education(
+        db: Session, education_id: str, update_data: EducationUpdate
+    ) -> EducationDB:
         """Update education entry."""
         try:
-            education = db.query(EducationDB).filter(EducationDB.id == education_id).first()
+            education = (
+                db.query(EducationDB).filter(EducationDB.id == education_id).first()
+            )
             if not education:
                 raise HTTPException(status_code=404, detail="Education not found")
-            
+
             update_dict = update_data.model_dump(exclude_unset=True)
-            
+
             for key, value in update_dict.items():
                 if hasattr(education, key):
                     setattr(education, key, value)
-            
+
             db.commit()
             db.refresh(education)
             return education
@@ -63,10 +74,12 @@ class EducationService:
     def delete_education(db: Session, education_id: str) -> None:
         """Delete education entry."""
         try:
-            education = db.query(EducationDB).filter(EducationDB.id == education_id).first()
+            education = (
+                db.query(EducationDB).filter(EducationDB.id == education_id).first()
+            )
             if not education:
                 raise HTTPException(status_code=404, detail="Education not found")
-            
+
             db.delete(education)
             db.commit()
         except SQLAlchemyError as e:

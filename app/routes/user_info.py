@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from typing import Annotated
 
 from app.models import UserInfo, UserInfoCreate, UserInfoUpdate
@@ -7,23 +7,20 @@ from app.services.user_info_service import UserInfoService
 from app.services.db import DatabaseSession
 from app.services.auth_service import get_current_user
 
-router = APIRouter(
-    prefix="/user-info",
-    tags=["User Info"]
-)
+router = APIRouter(prefix="/user-info", tags=["User Info"])
 
 
 @router.get("/", response_model=UserInfo)
-def get_user_info(db: DatabaseSession, current_user: Annotated[User, Depends(get_current_user)]):
-    """Get current user's profile information."""
-    return UserInfoService.get_user_info(db, current_user.id)
+def get_user_info(db: DatabaseSession):
+    """Get public user profile information."""
+    return UserInfoService.get_public_user_info(db)
 
 
 @router.post("/", response_model=UserInfo)
 def create_or_update_user_info(
     user_info: UserInfoCreate,
     db: DatabaseSession,
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """Create or update user profile information."""
     return UserInfoService.create_or_update_user_info(db, current_user.id, user_info)
@@ -33,14 +30,16 @@ def create_or_update_user_info(
 def update_user_info(
     user_info_update: UserInfoUpdate,
     db: DatabaseSession,
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     """Update specific fields of user profile."""
     return UserInfoService.update_user_info(db, current_user.id, user_info_update)
 
 
 @router.delete("/")
-def delete_user_info(db: DatabaseSession, current_user: Annotated[User, Depends(get_current_user)]):
+def delete_user_info(
+    db: DatabaseSession, current_user: Annotated[User, Depends(get_current_user)]
+):
     """Delete user profile information."""
     UserInfoService.delete_user_info(db, current_user.id)
     return {"message": "User info deleted successfully"}
